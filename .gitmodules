@@ -1,0 +1,3 @@
+[submodule "vendor/nifkit"]
+	path = vendor/nifkit
+	url = https://github.com/puffball1567/nifkit.git

@@ -1,0 +1,35 @@
+{
+  "name": "nifkit-wasm",
+  "version": "0.1.1",
+  "description": "WebAssembly and TypeScript bindings for NIFKit",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "build": "npm run build:wasm && npm run build:ts",
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "build:ts": "tsc --project tsconfig.json",
+    "test": "npm run build && npm run test:node && npm run test:browser",
+    "test:node": "node tests/smoke.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

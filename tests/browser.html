@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>nifkit-wasm browser test</title>
+<script type="module">
+  import { createNifkit, NifkitError } from "../dist/index.js";
+
+  try {
+    const nifkit = await createNifkit();
+    const source = "(record title \"NIF\" -5 12u)";
+    const bif = nifkit.nifToBif(source);
+    nifkit.validateBif(bif);
+    if (nifkit.bifToNif(bif) !== source) throw new Error("round trip mismatch");
+
+    let rejected = false;
+    try {
+      nifkit.nifToBif("(unclosed");
+    } catch (error) {
+      rejected = error instanceof NifkitError;
+    }
+    if (!rejected) throw new Error("invalid NIF was accepted");
+    document.body.dataset.result = "passed";
+  } catch (error) {
+    document.body.dataset.result = "failed";
+    document.body.textContent = error instanceof Error ? error.stack ?? error.message : String(error);
+  }
+</script>
