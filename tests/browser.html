@@ -11,6 +11,20 @@
     nifkit.validateBif(bif);
     if (nifkit.bifToNif(bif) !== source) throw new Error("round trip mismatch");
 
+    const limits = {
+      maxInputBytes: 1024,
+      maxOutputBytes: 1024,
+      maxNestingDepth: 32,
+      maxTokens: 128,
+      maxPoolEntries: 64,
+      maxPoolBytes: 1024,
+      maxStringBytes: 256,
+      maxIndexEntries: 64
+    };
+    const limitedBif = nifkit.nifToBif(source, limits);
+    nifkit.validateBif(limitedBif, limits);
+    if (nifkit.bifToNif(limitedBif, limits) !== source) throw new Error("limited round trip mismatch");
+
     let rejected = false;
     try {
       nifkit.nifToBif("(unclosed");

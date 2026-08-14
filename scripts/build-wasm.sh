@@ -30,7 +30,7 @@ nim c --cpu:wasm32 --cc:clang \
   --passL:-sEXPORT_ES6=1 \
   --passL:-sENVIRONMENT=web,node \
   --passL:-sFILESYSTEM=0 \
-  "--passL=-sEXPORTED_FUNCTIONS=['_malloc','_free','_nifkit_nif_to_bif','_nifkit_bif_to_nif','_nifkit_validate_bif','_nifkit_free','_nifkit_last_error']" \
+  "--passL=-sEXPORTED_FUNCTIONS=['_malloc','_free','_nifkit_nif_to_bif','_nifkit_bif_to_nif','_nifkit_validate_bif','_nifkit_nif_to_bif_with_limits','_nifkit_bif_to_nif_with_limits','_nifkit_validate_bif_with_limits','_nifkit_free','_nifkit_last_error']" \
   "--passL=-sEXPORTED_RUNTIME_METHODS=['UTF8ToString','HEAPU8','HEAPU32']" \
   -o:"$package_dir/dist/nifkit.generated.js" \
   "$core_dir/src/nifkit_capi.nim"
