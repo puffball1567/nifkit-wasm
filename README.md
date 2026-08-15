@@ -7,7 +7,8 @@ NIFKit core repository: <https://github.com/puffball1567/nifkit>
 
 NIFKit converts between NIF 2027 text and BIF v5 binary data entirely on the
 client. The published package includes the compiled WebAssembly binary, so
-applications using it do not need Nim or Emscripten installed.
+applications using it do not need Nim or Emscripten installed. This release is
+built from NIFKit v0.4.0.
 
 ## NIF and BIF
 
@@ -70,6 +71,35 @@ console.log(nifkit.bifToNif(bif));
 
 Call `createNifkit()` once during application startup and reuse the returned
 object. Invalid NIF or BIF input throws `NifkitError`.
+
+## Limits for untrusted input
+
+The no-argument methods retain NIFKit's unrestricted codec behavior, which is
+appropriate for trusted local conversion. An application that accepts NIF or
+BIF from a network, file upload, or other untrusted boundary should choose a
+fixed resource policy during initialization and pass it on every operation at
+that boundary:
+
+```ts
+const untrustedLimits = {
+  maxInputBytes: 1_000_000,
+  maxOutputBytes: 2_000_000,
+  maxNestingDepth: 64,
+  maxTokens: 100_000,
+  maxPoolEntries: 20_000,
+  maxPoolBytes: 1_000_000,
+  maxStringBytes: 256_000,
+  maxIndexEntries: 20_000
+};
+
+const bif = nifkit.nifToBif(source, untrustedLimits);
+nifkit.validateBif(bif, untrustedLimits);
+const nif = nifkit.bifToNif(bif, untrustedLimits);
+```
+
+All eight fields are required and are non-negative Wasm32 sizes (at most
+`4_294_967_295`). Select values for the application's trust boundary; do not
+let an untrusted request choose them.
 
 ## Browser use
 
