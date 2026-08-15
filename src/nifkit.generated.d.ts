@@ -6,6 +6,9 @@ export interface EmscriptenModule {
   _nifkit_nif_to_bif(input: number, inputLength: number, output: number, outputLength: number): number;
   _nifkit_bif_to_nif(input: number, inputLength: number, output: number, outputLength: number): number;
   _nifkit_validate_bif(input: number, inputLength: number): number;
+  _nifkit_nif_to_bif_with_limits(input: number, inputLength: number, output: number, outputLength: number, limits: number): number;
+  _nifkit_bif_to_nif_with_limits(input: number, inputLength: number, output: number, outputLength: number, limits: number): number;
+  _nifkit_validate_bif_with_limits(input: number, inputLength: number, limits: number): number;
   _nifkit_free(pointer: number): void;
   _nifkit_last_error(): number;
   UTF8ToString(pointer: number): string;

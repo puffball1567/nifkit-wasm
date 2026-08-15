@@ -23,6 +23,22 @@ for (const [name, source, expected] of fixtures) {
 const largeNif = `(record "${"x".repeat(128 * 1024)}")`;
 assert.equal(nifkit.bifToNif(nifkit.nifToBif(largeNif)), largeNif);
 
+const limits = {
+  maxInputBytes: 1024,
+  maxOutputBytes: 1024,
+  maxNestingDepth: 32,
+  maxTokens: 128,
+  maxPoolEntries: 64,
+  maxPoolBytes: 1024,
+  maxStringBytes: 256,
+  maxIndexEntries: 64
+};
+const limitedBif = nifkit.nifToBif('(record "safe")', limits);
+nifkit.validateBif(limitedBif, limits);
+assert.equal(nifkit.bifToNif(limitedBif, limits), '(record "safe")');
+assert.throws(() => nifkit.nifToBif(`(record "${"x".repeat(1024)}")`, limits), NifkitError);
+assert.throws(() => nifkit.nifToBif("(ok)", { ...limits, maxTokens: -1 }), TypeError);
+
 assert.throws(() => nifkit.nifToBif("(unclosed"), NifkitError);
 assert.throws(() => nifkit.validateBif(new Uint8Array([0])), NifkitError);
 
