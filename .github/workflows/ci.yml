@@ -16,9 +16,13 @@ concurrency:
 
 jobs:
   wasm:
-    name: Build and test WebAssembly
+    name: Build and test WebAssembly (Nim ${{ matrix.nim }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        nim: ['2.2.10', '2.2.12']
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,7 +33,7 @@ jobs:
       - name: Install Nim
         uses: jiro4989/setup-nim-action@1dba098c77a0e800c96a7d92a0888ac2af26f19f # v2
         with:
-          nim-version: '2.2.10'
+          nim-version: ${{ matrix.nim }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install Emscripten
         uses: emscripten-core/setup-emsdk@4528d102f7230f0e7b276855c01ea1159be0e984 # v16

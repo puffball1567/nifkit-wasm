@@ -11,6 +11,12 @@
     nifkit.validateBif(bif);
     if (nifkit.bifToNif(bif) !== source) throw new Error("round trip mismatch");
 
+    const currentNif = "(record 0xFF 0b1111_1111u 1_000 1_2.5E+0_1 \"key: #value\")";
+    const currentCanonical = "(record 255 255u 1000 125.0 \"key\\3A \\23value\")";
+    if (nifkit.bifToNif(nifkit.nifToBif(currentNif)) !== currentCanonical) {
+      throw new Error("current specification round trip mismatch");
+    }
+
     const limits = {
       maxInputBytes: 1024,
       maxOutputBytes: 1024,

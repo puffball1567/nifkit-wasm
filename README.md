@@ -8,7 +8,7 @@ NIFKit core repository: <https://github.com/puffball1567/nifkit>
 NIFKit converts between NIF 2027 text and BIF v5 binary data entirely on the
 client. The published package includes the compiled WebAssembly binary, so
 applications using it do not need Nim or Emscripten installed. This release is
-built from NIFKit v0.4.0.
+built from NIFKit v0.4.1.
 
 ## NIF and BIF
 
@@ -43,6 +43,11 @@ execute NIF code.
 
 - Compound nodes use `(tag child ...)`.
 - Strings use double quotes; character literals use single quotes.
+- Integers accept decimal, hexadecimal (`0x`), octal (`0o`), and binary (`0b`)
+  notation. Numeric digit sequences accept `_` separators. Canonical output
+  remains decimal.
+- Quoted strings accept literal `#` and `:`; canonical output retains NIF
+  escaping for those characters.
 - Bare atoms can be identifiers, numbers, or symbols. Use NIF escapes such as
   `\20` for a space and `\2E` for a literal dot in an identifier.
 - `.` is an empty node. Adjacent empty nodes may be written compactly as `...`.
